@@ -1,11 +1,11 @@
 package com.snakat.mvp;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.Toast;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,20 +15,29 @@ public class ActivityBase extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 
-    public void showAlert(String title, String message, String ok)
+    public void showAlert(String title, String message, String okText)
     {
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(ok, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(okText, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
-    public void showAlert(@StringRes int titleId, @StringRes int messageId, @StringRes int okId) {
+    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK) {
         new AlertDialog.Builder(this)
-                .setTitle(titleId)
-                .setMessage(messageId)
-                .setPositiveButton(okId, (dialog, which) -> dialog.dismiss())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(okText, onClickOK)
+                .show();
+    }
+
+    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(cancelText, onClickCancel)
+                .setPositiveButton(okText, onClickOK)
                 .show();
     }
 

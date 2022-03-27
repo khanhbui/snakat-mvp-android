@@ -1,12 +1,12 @@
 package com.snakat.mvp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 public abstract class FragmentBase extends Fragment implements Contract.View {
@@ -48,19 +48,27 @@ public abstract class FragmentBase extends Fragment implements Contract.View {
     }
 
     @Override
-    public void showAlert(String title, String message, String ok) {
+    public void showAlert(String title, String message, String okText) {
         if (mActivityBase == null) {
             return;
         }
-        mActivityBase.showAlert(title, message, ok);
+        mActivityBase.showAlert(title, message, okText);
     }
 
     @Override
-    public void showAlert(@StringRes int titleId, @StringRes int messageId, @StringRes int okId) {
+    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK) {
         if (mActivityBase == null) {
             return;
         }
-        mActivityBase.showAlert(titleId, messageId, okId);
+        mActivityBase.showAlert(title, message, okText, onClickOK);
+    }
+
+    @Override
+    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showAlert(title, message, okText, onClickOK, cancelText, onClickCancel);
     }
 
     protected abstract void setUp(View view);

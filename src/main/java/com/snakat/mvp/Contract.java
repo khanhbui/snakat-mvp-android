@@ -1,6 +1,6 @@
 package com.snakat.mvp;
 
-import androidx.annotation.StringRes;
+import android.content.DialogInterface;
 
 public interface Contract {
     interface View {
@@ -9,9 +9,9 @@ public interface Contract {
 
         void hideLoading();
 
-        void showAlert(String title, String message, String ok);
-
-        void showAlert(@StringRes int titleId, @StringRes int messageId, @StringRes int okId);
+        void showAlert(String title, String message, String okText);
+        void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK);
+        void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel);
     }
 
     interface DialogView extends View {

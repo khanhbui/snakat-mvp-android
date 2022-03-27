@@ -2,6 +2,7 @@ package com.snakat.mvp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -92,11 +92,19 @@ public abstract class DialogBase extends DialogFragment implements Contract.Dial
     }
 
     @Override
-    public void showAlert(@StringRes int titleId, @StringRes int messageId, @StringRes int okId) {
+    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK) {
         if (mActivityBase == null) {
             return;
         }
-        mActivityBase.showAlert(titleId, messageId, okId);
+        mActivityBase.showAlert(title, message, okText, onClickOK);
+    }
+
+    @Override
+    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showAlert(title, message, okText, onClickOK, cancelText, onClickCancel);
     }
 
     protected abstract void setUp(View view);
