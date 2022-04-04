@@ -41,9 +41,9 @@ public class ActivityBase extends AppCompatActivity {
                 .show();
     }
 
-    public final void showLongToast(final String msg)
+    public final void showToast(String message)
     {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     public void showLoading() {

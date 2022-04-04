@@ -71,5 +71,13 @@ public abstract class FragmentBase extends Fragment implements Contract.View {
         mActivityBase.showAlert(title, message, okText, onClickOK, cancelText, onClickCancel);
     }
 
+    @Override
+    public void showToast(String message) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showToast(message);
+    }
+
     protected abstract void setUp(View view);
 }

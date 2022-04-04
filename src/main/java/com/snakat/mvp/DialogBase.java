@@ -107,6 +107,14 @@ public abstract class DialogBase extends DialogFragment implements Contract.Dial
         mActivityBase.showAlert(title, message, okText, onClickOK, cancelText, onClickCancel);
     }
 
+    @Override
+    public void showToast(String message) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showToast(message);
+    }
+
     protected abstract void setUp(View view);
 
     public void show(FragmentManager fragmentManager, String tag) {

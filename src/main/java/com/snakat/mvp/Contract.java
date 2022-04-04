@@ -12,6 +12,8 @@ public interface Contract {
         void showAlert(String title, String message, String okText);
         void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK);
         void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel);
+
+        void showToast(String message);
     }
 
     interface DialogView extends View {
