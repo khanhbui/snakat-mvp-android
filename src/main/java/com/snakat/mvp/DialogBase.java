@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,14 +14,15 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.viewbinding.ViewBinding;
 
-public abstract class DialogBase extends DialogFragment implements Contract.DialogView {
+public abstract class DialogBase<B extends ViewBinding, P extends Contract.Presenter> extends DialogFragment implements Contract.View {
 
-    private ActivityBase mActivityBase;
+    protected ActivityBase mActivityBase;
+    protected B mBinding;
+    protected P mPresenter;
 
     @NonNull
     @Override
@@ -49,24 +51,37 @@ public abstract class DialogBase extends DialogFragment implements Contract.Dial
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        setUp(view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mBinding = onCreateViewBinding(inflater, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        mPresenter = onCreatePresenter();
+        mPresenter.onAttach(this);
+
+        setupView(view);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         mActivityBase = (ActivityBase) context;
     }
 
     @Override
     public void onDetach() {
         mActivityBase = null;
-
         super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.onDetach();
+        super.onDestroyView();
     }
 
     @Override
@@ -92,7 +107,23 @@ public abstract class DialogBase extends DialogFragment implements Contract.Dial
     }
 
     @Override
+    public void showAlert(@StringRes int title, @StringRes int message, @StringRes int okText) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showAlert(title, message, okText);
+    }
+
+    @Override
     public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showAlert(title, message, okText, onClickOK);
+    }
+
+    @Override
+    public void showAlert(@StringRes int title, @StringRes int message, @StringRes int okText, DialogInterface.OnClickListener onClickOK) {
         if (mActivityBase == null) {
             return;
         }
@@ -108,6 +139,14 @@ public abstract class DialogBase extends DialogFragment implements Contract.Dial
     }
 
     @Override
+    public void showAlert(@StringRes int title, @StringRes int message, @StringRes int okText, DialogInterface.OnClickListener onClickOK, @StringRes int cancelText, DialogInterface.OnClickListener onClickCancel) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showAlert(title, message, okText, onClickOK, cancelText, onClickCancel);
+    }
+
+    @Override
     public void showToast(String message) {
         if (mActivityBase == null) {
             return;
@@ -115,20 +154,19 @@ public abstract class DialogBase extends DialogFragment implements Contract.Dial
         mActivityBase.showToast(message);
     }
 
-    protected abstract void setUp(View view);
-
-    public void show(FragmentManager fragmentManager, String tag) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Fragment prevFragment = fragmentManager.findFragmentByTag(tag);
-        if (prevFragment != null) {
-            transaction.remove(prevFragment);
-        }
-        transaction.addToBackStack(null);
-        show(transaction, tag);
-    }
-
     @Override
-    public void dismissDialog(String tag) {
-        dismiss();
+    public void showToast(@StringRes int message) {
+        if (mActivityBase == null) {
+            return;
+        }
+        mActivityBase.showToast(message);
     }
+
+    @NonNull
+    protected abstract P onCreatePresenter();
+
+    @NonNull
+    protected abstract B onCreateViewBinding(LayoutInflater inflater, ViewGroup container, boolean attachToParent);
+
+    protected abstract void setupView(@NonNull View view);
 }

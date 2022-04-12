@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,7 @@ public class ActivityBase extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 
-    public void showAlert(String title, String message, String okText)
+    public final void showAlert(String title, String message, String okText)
     {
         new AlertDialog.Builder(this)
                 .setTitle(title)
@@ -24,7 +25,15 @@ public class ActivityBase extends AppCompatActivity {
                 .show();
     }
 
-    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK) {
+    public final void showAlert(@StringRes int title, @StringRes int message, @StringRes int okText) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(okText, (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    public final void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
@@ -32,7 +41,24 @@ public class ActivityBase extends AppCompatActivity {
                 .show();
     }
 
-    public void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel) {
+    public final void showAlert(@StringRes int title, @StringRes int message, @StringRes int okText, DialogInterface.OnClickListener onClickOK) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(okText, onClickOK)
+                .show();
+    }
+
+    public final void showAlert(String title, String message, String okText, DialogInterface.OnClickListener onClickOK, String cancelText, DialogInterface.OnClickListener onClickCancel) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(cancelText, onClickCancel)
+                .setPositiveButton(okText, onClickOK)
+                .show();
+    }
+
+    public final void showAlert(@StringRes int title, @StringRes int message, @StringRes int okText, DialogInterface.OnClickListener onClickOK, @StringRes int cancelText, DialogInterface.OnClickListener onClickCancel) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
@@ -43,10 +69,15 @@ public class ActivityBase extends AppCompatActivity {
 
     public final void showToast(String message)
     {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public void showLoading() {
+    public final void showToast(@StringRes int message)
+    {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public final void showLoading() {
         hideLoading();
 
         mProgressDialog = new ProgressDialog(this);
@@ -60,13 +91,13 @@ public class ActivityBase extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
     }
 
-    public void hideLoading() {
+    public final void hideLoading() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.cancel();
         }
     }
 
-    public void removeFragment(String tag) {
+    public final void removeFragment(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         if (fragment != null) {
