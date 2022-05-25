@@ -22,6 +22,7 @@ public class ActivityBase extends AppCompatActivity {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(okText, (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
                 .show();
     }
 
@@ -30,6 +31,7 @@ public class ActivityBase extends AppCompatActivity {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(okText, (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
                 .show();
     }
 
@@ -38,6 +40,7 @@ public class ActivityBase extends AppCompatActivity {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(okText, onClickOK)
+                .setCancelable(false)
                 .show();
     }
 
@@ -46,6 +49,7 @@ public class ActivityBase extends AppCompatActivity {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(okText, onClickOK)
+                .setCancelable(false)
                 .show();
     }
 
@@ -55,6 +59,7 @@ public class ActivityBase extends AppCompatActivity {
                 .setMessage(message)
                 .setNegativeButton(cancelText, onClickCancel)
                 .setPositiveButton(okText, onClickOK)
+                .setCancelable(false)
                 .show();
     }
 
@@ -64,6 +69,7 @@ public class ActivityBase extends AppCompatActivity {
                 .setMessage(message)
                 .setNegativeButton(cancelText, onClickCancel)
                 .setPositiveButton(okText, onClickOK)
+                .setCancelable(false)
                 .show();
     }
 
